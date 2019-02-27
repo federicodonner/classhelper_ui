@@ -1,0 +1,5 @@
+{
+  "api_url": "http://localhost:8888/amerendar_api_v2/public/api",
+  "oauth_uri": "/oauth",
+  "ingredients_uri": "/ingrediente"
+}
