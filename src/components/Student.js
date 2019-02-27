@@ -1,7 +1,7 @@
 import React from "react";
-import { verifyLogin, fetchIngredients } from "../fetchFunctions";
+import { verifyLogin } from "../fetchFunctions";
 
-class Ingredientes extends React.Component {
+class Student extends React.Component {
   state: {
     user: {},
     ingredients: []
@@ -13,31 +13,31 @@ class Ingredientes extends React.Component {
     });
   };
 
-  componentDidMount() {
-    // Verify if the user has logged in before
-    const user = verifyLogin();
-    if (user) {
-      // If it has, store the information in state
-      this.setState(
-        { user },
-        function() {
-          fetchIngredients(user.token)
-            .then(results => {
-              return results.json();
-            })
-            .then(response => {
-              this.setState({ ingredients: response.ingredients });
-            });
-        }.bind(this)
-      );
-    } else {
-      // If there is no data in localStorage, go back to login screen
-      // this.props.history.push(`/login`);
-      this.props.history.push({
-        pathname: "/login"
-      });
-    }
-  }
+  // componentDidMount() {
+  //   // Verify if the user has logged in before
+  //   const user = verifyLogin();
+  //   if (user) {
+  //     // If it has, store the information in state
+  //     this.setState(
+  //       { user },
+  //       function() {
+  //         fetchIngredients(user.token)
+  //           .then(results => {
+  //             return results.json();
+  //           })
+  //           .then(response => {
+  //             this.setState({ ingredients: response.ingredients });
+  //           });
+  //       }.bind(this)
+  //     );
+  //   } else {
+  //     // If there is no data in localStorage, go back to login screen
+  //     // this.props.history.push(`/login`);
+  //     this.props.history.push({
+  //       pathname: "/login"
+  //     });
+  //   }
+  // }
 
   render() {
     return (
@@ -88,4 +88,4 @@ class Ingredientes extends React.Component {
   }
 }
 
-export default Ingredientes;
+export default Student;

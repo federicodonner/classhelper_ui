@@ -1,17 +1,14 @@
 import api_config from "./config.json";
 
-export function fetchIngredients(token) {
-  return fetch(api_config.api_url + api_config.ingredients_uri, {
-    method: "GET",
-    headers: {
-      Authorization: "Bearer " + token
-    }
+export function fetchClasses() {
+  return fetch(api_config.api_url + api_config.class_uri, {
+    method: "GET"
   });
 }
 
-export function fetchIngredient(ingredient_id) {
+export function fetchClass(number) {
   return fetch(
-    api_config.api_url + api_config.ingredients_uri + "/" + ingredient_id
+    api_config.api_url + api_config.class_uri + "/" + number
   );
 }
 

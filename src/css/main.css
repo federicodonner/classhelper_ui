@@ -1,6 +1,6 @@
 body {
   font-family: "Montserrat", sans-serif;
-  background-color: #8aa399;
+  background-color: #70a0af;
   color: #fff8f0;
 }
 
@@ -220,16 +220,11 @@ ul.libros li {
   left: 42.5%;
 }
 
-
 .lista {
   font-size: 16pt;
   text-align: left;
   margin-left: 30px;
   margin-top: 24px;
-}
-
-.lista li {
-  list-style-image: url("../images/icono-lista.png");
 }
 
 html,

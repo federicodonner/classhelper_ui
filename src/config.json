@@ -1,5 +1,5 @@
 {
-  "api_url": "http://localhost:8888/amerendar_api_v2/public/api",
-  "oauth_uri": "/oauth",
-  "ingredients_uri": "/ingrediente"
+  "api_url": "http://localhost:8888/classhelper_api/public/api",
+  "class_uri": "/class",
+  "images_url": "http://localhost:8888/classhelper_api/slides/"
 }

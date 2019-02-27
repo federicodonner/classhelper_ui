@@ -5,3 +5,11 @@ export function convertDate(timestamp) {
     date.getUTCDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear()
   );
 }
+
+export function convertDateTime(timestamp) {
+  const date = new Date();
+  date.setTime(timestamp*1000);
+  return (
+    date.getUTCDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " - " + date.getHours() + ":" + date.getMinutes()
+  );
+}
