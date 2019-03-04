@@ -1,5 +1,6 @@
 {
   "api_url": "http://localhost:8888/classhelper_api/public/api",
   "class_uri": "/class",
-  "images_url": "http://localhost:8888/classhelper_api/slides/"
+  "images_url": "http://localhost:8888/classhelper_api/slides/",
+  "message_uri": "/message"
 }
