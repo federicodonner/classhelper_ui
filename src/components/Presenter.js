@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { fetchClass, sendMessage } from "../fetchFunctions";
 import api_config from "../config.json";
-import { setPusherClient } from "react-pusher";
-import Pusher from "pusher-js";
+import PresenterActivity from "./PresenterActivity";
 
 class Presenter extends React.Component {
   state: {
@@ -32,7 +31,9 @@ class Presenter extends React.Component {
       currentSlide + modifier >= 0 &&
       currentSlide + modifier <= slides.length - 2
     ) {
-      this.setState({ currentSlide: this.state.currentSlide + modifier });
+      this.setState({
+        currentSlide: this.state.currentSlide + modifier
+      });
       sendMessage(presenterInstructions);
     }
   };
@@ -51,29 +52,16 @@ class Presenter extends React.Component {
         response.slides.push(lastSlide);
         response.slides.push(lastSlide);
         this.setState(
-          { slides: response.slides },
+          {
+            slides: response.slides
+          },
           function() {
-            this.setState({ currentSlide: 0 });
+            this.setState({
+              currentSlide: 0
+            });
           }.bind(this)
         );
       });
-
-    // Enable pusher logging - don't include this in production
-    Pusher.logToConsole = true;
-
-    var pusher = new Pusher("e800d1befb580b1b5646", {
-      cluster: "us2",
-      forceTLS: true
-    });
-
-    var channel = pusher.subscribe("available-classes");
-    // channel.bind("my-event", function(data) {
-    //   alert(JSON.stringify(data));
-    // });
-
-    channel.bind("request-classes", function(data) {
-      console.log(data);
-    });
   }
 
   render() {
@@ -81,12 +69,12 @@ class Presenter extends React.Component {
       <div className="app-view cover">
         <div className="scrollable">
           <div className="content">
+            {" "}
             {this.state && !this.state.slides && (
               <p>
                 <img className="loader" src="/images/loader.gif" />
               </p>
             )}
-
             {this.state &&
               this.state.slides &&
               this.state.currentSlide != undefined && (
@@ -97,7 +85,7 @@ class Presenter extends React.Component {
                       api_config.images_url +
                       this.state.slides[this.state.currentSlide].image
                     }
-                  />
+                  />{" "}
                   {this.state.currentSlide != this.state.slides.length - 1 && (
                     <div className="transport">
                       <img
@@ -111,24 +99,32 @@ class Presenter extends React.Component {
                         src="/images/next.png"
                       />
                       <div className="position">
-                        {this.state.currentSlide} de{" "}
-                        {this.state.slides.length - 2}
-                      </div>
+                        {" "}
+                        {this.state.currentSlide}
+                        de {this.state.slides.length - 2}
+                      </div>{" "}
                     </div>
                   )}
-
                   <div className="currentNotes">
+                    {" "}
                     {this.state.slides[this.state.currentSlide].notes}
                   </div>
-
                   <img
                     className="nextSlide"
                     src={
                       api_config.images_url +
                       this.state.slides[this.state.currentSlide + 1].image
                     }
-                  />
-                  <div className="slideActivities">Hola</div>
+                  />{" "}
+                  <div className="slideActivities">
+                    {this.state.slides[this.state.currentSlide].activity && (
+                      <PresenterActivity
+                        details={
+                          this.state.slides[this.state.currentSlide].activity
+                        }
+                      />
+                    )}
+                  </div>
                 </>
               )}
           </div>

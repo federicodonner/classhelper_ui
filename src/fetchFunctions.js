@@ -10,17 +10,6 @@ export function fetchClass(number) {
   return fetch(api_config.api_url + api_config.class_uri + "/" + number);
 }
 
-export function addIngredient(ingredient, token) {
-  return fetch(api_config.api_url + api_config.ingredients_uri, {
-    method: "POST",
-    body: JSON.stringify(ingredient), // data can be `string` or {object}!
-    headers: {
-      Authorization: "Bearer " + token,
-      "Content-Type": "application/json",
-      "accept-encoding": "gzip, deflate"
-    }
-  });
-}
 
 export function sendMessage(data) {
   return fetch(api_config.api_url + api_config.message_uri, {

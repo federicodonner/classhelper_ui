@@ -1,12 +1,16 @@
 import React from "react";
-import { fetchStudent } from "../fetchFunctions";
+import { fetchStudent, sendMessage } from "../fetchFunctions";
 import { setPusherClient } from "react-pusher";
 import Pusher from "pusher-js";
 
 class Student extends React.Component {
   state: {
-    user: {},
-    student: {}
+    student: {},
+    simplemessage: ""
+  };
+
+  clearMessage = event => {
+    this.setState({ simplemessage: "" });
   };
 
   componentDidMount() {
@@ -39,9 +43,24 @@ class Student extends React.Component {
             //   alert(JSON.stringify(data));
             // });
 
-            generalChannel.bind("request-available", function(data) {
-              console.log(data);
-            });
+            generalChannel.bind(
+              "request-available",
+              function() {
+                const data = {
+                  channel: "student-confirmation",
+                  event: "student-confirm",
+                  message: this.state.student.id
+                };
+                sendMessage(data);
+              }.bind(this)
+            );
+
+            personalChannel.bind(
+              "simple-message",
+              function(data) {
+                this.setState({ simplemessage: data.message });
+              }.bind(this)
+            );
           }
         );
       });
@@ -60,21 +79,27 @@ class Student extends React.Component {
                     {this.state.student.name +
                       " " +
                       this.state.student.last_name}
-                  </span>{" "}
+                  </span>
                   <p>
                     Recordá dejar tu celular encendido y en esta página para
                     recibir las actividades.
                   </p>
+                  {this.state && this.state.simplemessage && (
+                    <>
+                      <p>{this.state.simplemessage}</p>
+                      <a onClick={this.clearMessage}> borrar</a>
+                    </>
+                  )}
                 </>
               )}
-            </div>{" "}
+            </div>
             {this.state && !this.state.student && (
               <p>
                 <img className="loader" src="/images/loader.gif" />
               </p>
-            )}{" "}
-          </div>{" "}
-        </div>{" "}
+            )}
+          </div>
+        </div>
       </div>
     );
   }
