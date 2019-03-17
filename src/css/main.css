@@ -1,6 +1,7 @@
 body {
   font-family: "Montserrat", sans-serif;
   background-color: #222222;
+  color: white;
 }
 
 .scrollable {
@@ -95,7 +96,7 @@ a:active {
   height: 60vh;
 }
 
-.presentation{
+.presentation {
   max-width: 100vw;
   max-height: 100vh;
 }
@@ -219,31 +220,4 @@ strong {
   opacity: 1;
   transform: translate3d(0, 0, 0);
   transition: transform 450ms ease-out, opacity 400ms ease-out;
-}
-
-/* RESPONSIVE */
-@media only screen and (max-width: 1000px) {
-  .responsive-centrable {
-    text-align: center;
-  }
-
-  .section-title {
-    text-align: left;
-  }
-
-  .menu {
-    width: 100%;
-  }
-
-  .responsive-hide {
-    display: none !important;
-  }
-
-  .responsive-show {
-    display: inline !important;
-  }
-
-  .form-submit {
-    left: 0;
-  }
 }

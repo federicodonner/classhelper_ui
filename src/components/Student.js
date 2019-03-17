@@ -1,43 +1,51 @@
 import React from "react";
-import { verifyLogin } from "../fetchFunctions";
+import { fetchStudent } from "../fetchFunctions";
+import { setPusherClient } from "react-pusher";
+import Pusher from "pusher-js";
 
 class Student extends React.Component {
   state: {
     user: {},
-    ingredients: []
+    student: {}
   };
 
-  goToSection = section => event => {
-    this.props.history.push({
-      pathname: "/" + section
-    });
-  };
+  componentDidMount() {
+    fetchStudent(this.props.match.params.id)
+      .then(results => {
+        return results.json();
+      })
+      .then(response => {
+        this.setState(
+          {
+            student: response
+          },
+          function() {
+            // Enable pusher logging - don't include this in production
 
-  // componentDidMount() {
-  //   // Verify if the user has logged in before
-  //   const user = verifyLogin();
-  //   if (user) {
-  //     // If it has, store the information in state
-  //     this.setState(
-  //       { user },
-  //       function() {
-  //         fetchIngredients(user.token)
-  //           .then(results => {
-  //             return results.json();
-  //           })
-  //           .then(response => {
-  //             this.setState({ ingredients: response.ingredients });
-  //           });
-  //       }.bind(this)
-  //     );
-  //   } else {
-  //     // If there is no data in localStorage, go back to login screen
-  //     // this.props.history.push(`/login`);
-  //     this.props.history.push({
-  //       pathname: "/login"
-  //     });
-  //   }
-  // }
+            Pusher.logToConsole = true;
+
+            // Pusher config needs to go inside the setState callback because
+            // it uses the student id
+            var pusher = new Pusher("e800d1befb580b1b5646", {
+              cluster: "us2",
+              forceTLS: true
+            });
+
+            var generalChannel = pusher.subscribe("available-students");
+            var personalChannel = pusher.subscribe(
+              "student-" + this.state.student.id
+            );
+            // channel.bind("my-event", function(data) {
+            //   alert(JSON.stringify(data));
+            // });
+
+            generalChannel.bind("request-available", function(data) {
+              console.log(data);
+            });
+          }
+        );
+      });
+  }
 
   render() {
     return (
@@ -45,44 +53,28 @@ class Student extends React.Component {
         <div className="scrollable">
           <div className="content">
             <div className="header">
-              <img className="icono" src="/images/icono-ingredientes.png" />
-              <span className="title">Ingredientes</span>
-            </div>
-
-            {this.state && !this.state.ingredients && (
+              {this.state && this.state.student && (
+                <>
+                  <span className="title">
+                    Hola
+                    {this.state.student.name +
+                      " " +
+                      this.state.student.last_name}
+                  </span>{" "}
+                  <p>
+                    Recordá dejar tu celular encendido y en esta página para
+                    recibir las actividades.
+                  </p>
+                </>
+              )}
+            </div>{" "}
+            {this.state && !this.state.student && (
               <p>
                 <img className="loader" src="/images/loader.gif" />
               </p>
-            )}
-
-            {this.state && this.state.ingredients && (
-              <ul className="lista ingredientes">
-                {this.state.ingredients.map(obj => {
-                  return (
-                    <li key={obj.id}>
-                      <p>
-                        {obj.nombre} - {obj.cantidad} {obj.unidades}
-                      </p>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </div>
-        </div>
-
-        <div className="footer">
-          <div
-            className="nav-button center"
-            onClick={this.goToSection("nuevoingrediente")}
-          >
-            <img className="nav-icon" src="/images/icono-agregar.png" />
-          </div>
-          <div className="nav-button left" onClick={this.goToSection("")}>
-            <img className="nav-icon" src="/images/icono-board.png" />
-            <span>Volver</span>
-          </div>
-        </div>
+            )}{" "}
+          </div>{" "}
+        </div>{" "}
       </div>
     );
   }

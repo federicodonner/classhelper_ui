@@ -33,6 +33,31 @@ export function sendMessage(data) {
   });
 }
 
+export function fetchCourses() {
+  return fetch(api_config.api_url + api_config.course_uri, {
+    method: "GET"
+  });
+}
+
+export function fetchStudents() {
+  return fetch(api_config.api_url + api_config.student_uri, {
+    method: "GET"
+  });
+}
+
+export function fetchStudent(id) {
+  return fetch(api_config.api_url + api_config.student_uri + "/" + id, {
+    method: "GET"
+  });
+}
+
+
+
+
+
+
+
+
 export function fetchUsers(empresa) {
   return fetch(
     "http://www.federicodonner.com/clublibros_api/public/api/usuarios?empresa=" +
