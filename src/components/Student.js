@@ -69,13 +69,13 @@ class Student extends React.Component {
   render() {
     return (
       <div className="app-view cover">
-        <div className="scrollable">
-          <div className="content">
-            <div className="header">
-              {this.state && this.state.student && (
-                <>
+        <div className="studentScrollable">
+          <div className="studentContent">
+            {this.state && this.state.student && (
+              <>
+                <div className="studentHeader">
                   <span className="title">
-                    Hola
+                    Hola{" "}
                     {this.state.student.name +
                       " " +
                       this.state.student.last_name}
@@ -84,15 +84,23 @@ class Student extends React.Component {
                     Recordá dejar tu celular encendido y en esta página para
                     recibir las actividades.
                   </p>
-                  {this.state && this.state.simplemessage && (
-                    <>
-                      <p>{this.state.simplemessage}</p>
-                      <a onClick={this.clearMessage}> borrar</a>
-                    </>
-                  )}
-                </>
-              )}
-            </div>
+                </div>
+                {this.state && this.state.simplemessage && (
+                  <div className="activity">
+                    <div className="activityContent">
+                      {this.state.simplemessage.split("\\n").map((item, i) => (
+                        <p key={i}>{item}</p>
+                      ))}
+                    </div>
+                    <a onClick={this.clearMessage} className="clearMessage">
+                      {" "}
+                      borrar mensaje
+                    </a>
+                  </div>
+                )}
+              </>
+            )}
+
             {this.state && !this.state.student && (
               <p>
                 <img className="loader" src="/images/loader.gif" />

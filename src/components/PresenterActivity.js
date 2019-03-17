@@ -6,7 +6,8 @@ import Pusher from "pusher-js";
 class PresenterActivity extends React.Component {
   state: {
     students: [],
-    message: ""
+    message: "",
+    sendto: 0
   };
 
   // This function triggers whenever a field of a steps is updated
@@ -19,12 +20,14 @@ class PresenterActivity extends React.Component {
   };
 
   sendMessage = studentId => event => {
-    const data = {
-      channel: "available-students",
-      event: "request-available",
-      message: "ping"
-    };
-    sendMessage(data);
+    this.setState({ sendto: studentId }, function() {
+      const data = {
+        channel: "available-students",
+        event: "request-available",
+        message: "ping"
+      };
+      sendMessage(data);
+    });
   };
 
   componentDidMount() {
@@ -60,13 +63,14 @@ class PresenterActivity extends React.Component {
     confirmationChannel.bind(
       "student-confirm",
       function(data) {
-        console.log(data);
-        const sendData = {
-          channel: "student-" + data.message,
-          event: "simple-message",
-          message: this.props.details.text + "\n\r" + this.state.message
-        };
-        sendMessage(sendData);
+        if (data.message == this.state.sendto) {
+          const sendData = {
+            channel: "student-" + data.message,
+            event: "simple-message",
+            message: this.props.details.text + " \\n " + this.state.message
+          };
+          sendMessage(sendData);
+        }
       }.bind(this)
     );
   }
@@ -79,19 +83,38 @@ class PresenterActivity extends React.Component {
         {" "}
         {this.props.details.type == 1 && (
           <>
-            Mensaje global: {this.props.details.text}{" "}
+            <p>
+              <strong>Actividad</strong>:
+              <span className="newLine">
+                Mensaje global + custom, disparado individual.
+              </span>
+            </p>
+            <p>
+              <strong>Mensaje global</strong>:
+              <span className="newLine">
+                {this.props.details.text.split("\\n").map((item, i) => (
+                  <span className="newLine" key={i}>
+                    {item}
+                  </span>
+                ))}
+              </span>
+            </p>
             {this.state && this.state.students && (
               <>
-                {" "}
                 {this.state.students.map(obj => {
                   return (
-                    <li key={obj.id}>
-                      {" "}
-                      {obj.name + " " + obj.last_name}{" "}
-                      <input type="text" onChange={this.messageChanged} />{" "}
-                      <span>
-                        <a onClick={this.sendMessage(obj.id)}> Mandar </a>{" "}
-                      </span>{" "}
+                    <li key={obj.id} className="distance">
+                      {obj.name + " " + obj.last_name}
+                      <span className="newLine">
+                        <textarea
+                          onChange={this.messageChanged}
+                          rows="4"
+                          cols="45"
+                        />
+                      </span>
+                      <span className="newLine">
+                        <a onClick={this.sendMessage(obj.id)}> Mandar </a>
+                      </span>
                     </li>
                   );
                 })}{" "}

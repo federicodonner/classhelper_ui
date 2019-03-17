@@ -99,9 +99,8 @@ class Presenter extends React.Component {
                         src="/images/next.png"
                       />
                       <div className="position">
-                        {" "}
                         {this.state.currentSlide}
-                        de {this.state.slides.length - 2}
+                        {" "}de{" "}{this.state.slides.length - 2}
                       </div>{" "}
                     </div>
                   )}
